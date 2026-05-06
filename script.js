@@ -24,6 +24,11 @@ async function fetchWeather() {
             <p class="temperature">${temperature}°C</p>
             <p class="description">${weatherDescription}</p>
         `;
+        applyWeatherTheme(data.current_weather.weathercode); // Call the new function
+    } catch (error) {
+            <p class="temperature">${temperature}°C</p>
+            <p class="description">${weatherDescription}</p>
+        `;
 
     } catch (error) {
         console.error("Could not fetch weather data:", error);
@@ -66,6 +71,35 @@ function getWeatherDescription(weathercode) {
         97: 'Slight thunderstorm with heavy hail'
     };
     return descriptions[weathercode] || 'Unknown weather';
+}
+
+    }
+}
+
+// Function to apply theme based on weather code
+function applyWeatherTheme(weathercode) {
+    const body = document.body;
+    // Remove all existing weather theme classes
+    body.classList.remove('clear-sky', 'cloudy', 'foggy', 'rainy', 'snowy', 'thunderstorm');
+
+    let themeClass = '';
+    if (weathercode === 0 || weathercode === 1) {
+        themeClass = 'clear-sky';
+    } else if (weathercode === 2 || weathercode === 3) {
+        themeClass = 'cloudy';
+    } else if (weathercode >= 45 && weathercode <= 48) {
+        themeClass = 'foggy';
+    } else if ((weathercode >= 51 && weathercode <= 57) || (weathercode >= 61 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) {
+        themeClass = 'rainy';
+    } else if ((weathercode >= 71 && weathercode <= 77) || (weathercode >= 85 && weathercode <= 86)) {
+        themeClass = 'snowy';
+    } else if (weathercode >= 95 && weathercode <= 97) {
+        themeClass = 'thunderstorm';
+    } else {
+        themeClass = 'cloudy'; // Default theme
+    }
+
+    body.classList.add(themeClass);
 }
 
 fetchWeather();
