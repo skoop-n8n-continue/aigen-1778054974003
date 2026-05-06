@@ -69,8 +69,64 @@ h1 {
 body.clear-sky {
     background: linear-gradient(to top, #87CEEB, #FFD700); /* Light blue to golden yellow */
     color: #333; /* Darker text for contrast */
+    position: relative; /* Needed for absolute positioning of pseudo-elements */
+    overflow: hidden; /* Ensure elements don't cause scrollbars */
 }
-body.clear-sky .weather-container {
+
+body.clear-sky::before, /* Sun */
+body.clear-sky::after { /* Cloud */
+    content: '';
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 0; /* Behind content */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Sun Element */
+body.clear-sky::before {
+    width: 200px;
+    height: 200px;
+    background-color: #FFDA61; /* Sun color */
+    border-radius: 50%;
+    top: 10%;
+    left: 10%;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); /* Soft glow */
+    animation: pulse-rays 4s infinite ease-in-out;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%23FFDA61" opacity="0.8"><path d="M50 0 L60 20 L70 0 L80 20 L90 0 L100 20 L80 30 L90 50 L80 70 L90 80 L100 70 L80 80 L70 60 L80 50 L70 40 L60 60 L70 70 L60 80 L50 60 L40 80 L30 70 L40 50 L30 40 L40 30 L20 30 L30 20 L20 0 L30 20 L40 0 Z"/></g></svg>');
+    background-size: 100% 100%;
+    animation: rotate-rays 8s infinite linear;
+    transform-origin: 50% 50%;
+}
+
+/* Cloud Element */
+body.clear-sky::after {
+    width: 300px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    border-radius: 50%;
+    top: 20%;
+    right: 5%;
+    animation: float-cloud 15s infinite ease-in-out alternate;
+    filter: blur(2px); /* Soften edges */
+}
+
+@keyframes pulse-rays {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes rotate-rays {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes float-cloud {
+    0% { transform: translateX(-20px) translateY(-10px); }
+    100% { transform: translateX(20px) translateY(10px); }
+}
+
+body.clear-sky .weather-container {body.clear-sky .weather-container {
     background-color: rgba(255, 255, 255, 0.3); /* Lighter container */
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); /* Golden shadow */
 }
